@@ -1,0 +1,5 @@
+@include "x/003.inc";
+@include "../include/x/003.inc";
+@include "../../tests/include/x/003.inc";
+@include "../../tests/include/x/../x/003.inc";
+div { message: $x; }

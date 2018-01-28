@@ -1,0 +1,1 @@
+ecss: tests/include/008.in:1:0: Unable to read included stylesheet "file/not/found.inc".

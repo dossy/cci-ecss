@@ -1,0 +1,2 @@
+@include "007.in";
+div { a:b; }

@@ -1,0 +1,1 @@
+$x readonly: "hello, world!";

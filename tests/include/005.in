@@ -1,0 +1,2 @@
+@include "x/005.inc";
+div { message: $x; }

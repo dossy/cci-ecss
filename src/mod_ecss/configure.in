@@ -1,0 +1,63 @@
+# Process this file with autoconf to produce a configure script.
+AC_INIT(Makefile.in)
+
+# Checks for programs
+
+# Checks for libraries
+
+# Checks for header files
+AC_HEADER_STDC
+
+# Checks for typedefs, structures, and compiler characteristics
+
+# Checks for library functions
+
+# Check for ecss
+AC_MSG_CHECKING(for ecss support)
+AC_ARG_WITH(ecss,
+  AC_HELP_STRING([--with-ecss=DIR], [specify path to ecss]),
+  [ecss=$withval],
+  [ecss=no])
+AC_MSG_RESULT($ecss)
+AC_SUBST(ecss)
+
+if test "$ecss" != "no"; then
+  if test "$ecss" = "yes"; then
+    AC_MSG_ERROR(Please specify the location of the ecss installation)
+  fi
+  if test ! -d "$ecss/include" -o ! -d "$ecss/lib"; then
+    AC_MSG_ERROR(couldn't find ecss in $ecss)
+  fi
+else
+  AC_MSG_ERROR(ecss is required!)
+fi
+
+# Check for apache
+AC_MSG_CHECKING(for apache support)
+AC_ARG_WITH(apache,
+  AC_HELP_STRING([--with-apache=DIR], [specify path to apache]),
+  [apache=$withval],
+  [apache=no])
+AC_MSG_RESULT($apache)
+AC_SUBST(apache)
+
+if test "$apache" != "no"; then
+  if test "$apache" = "yes"; then
+    AC_MSG_ERROR(Please specify the location of the apache installation)
+  fi
+  if test ! -x "$apache/bin/apxs"; then
+    AC_MSG_ERROR(couldn't find apache in $apache)
+  fi
+else
+  AC_MSG_ERROR(apache is required!)
+fi
+
+apxs="$apache/bin/apxs"
+AC_SUBST(apxs)
+
+apr_config=`$apxs -q APR_CONFIG 2>/dev/null || echo "$apache/bin/apr-config"`
+AC_SUBST(apr_config)
+
+# Generate files and clean up
+AC_SUBST(prefix)
+AC_OUTPUT(Makefile)

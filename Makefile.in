@@ -1,0 +1,99 @@
+PREFIX := @prefix@
+SHARED := @shared@
+
+CC := g++
+LEX := flex
+AR := ar
+CPPFLAGS := -Wall -Isrc -g -O3
+LIBS :=
+
+BOOST_HEADERS := @boost_headers@
+ifneq ($(BOOST_HEADERS),/usr/include)
+	CPPFLAGS += -I$(BOOST_HEADERS)
+endif
+
+BOOST_LIB := @boost_lib@
+ifneq ($(BOOST_LIB),/usr/lib)
+	LIBS += -L$(BOOST_LIB)
+endif
+
+ifeq ($(SHARED),yes)
+	LIB_NAME := lib/libecss.so
+	CPPFLAGS += -fPIC
+else
+	LIB_NAME := lib/libecss.a
+endif
+
+ECSS := bin/ecss
+TOKENIZE := bin/tokenize
+
+PROGRAMS = $(ECSS) $(TOKENIZE)
+
+SRC := src/ecss
+
+LIB_OBJS := \
+	$(SRC)/ast.o \
+	$(SRC)/css.o \
+	$(SRC)/error.o \
+	$(SRC)/evaluator.o \
+	$(SRC)/file_util.o \
+	$(SRC)/lexer.o \
+	$(SRC)/optimizer.o \
+	$(SRC)/parser.o \
+	$(SRC)/regex.o \
+	$(SRC)/scanner.l.o \
+	$(SRC)/settings.o \
+	$(SRC)/symbol_table.o \
+	$(SRC)/tokens.o \
+	$(SRC)/translator.o \
+	$(SRC)/user_agent.o \
+	$(SRC)/utility.o
+
+.PHONY: all test clean
+
+all: $(PROGRAMS)
+
+lib/libecss.a: $(LIB_OBJS)
+	$(AR) rv $@ $(LIB_OBJS)
+	ranlib $@
+
+lib/libecss.so: $(LIB_OBJS)
+	$(CC) -shared -o $@ $(LIB_OBJS) $(LIBS)
+
+$(SRC)/lexer.cpp: $(SRC)/scanner.l.c
+
+$(SRC)/scanner.l.c: $(SRC)/scanner.l
+	$(LEX) -o $@ --header-file=$^.h $^
+
+test: $(PROGRAMS)
+	@./bin/run_tests.pl
+
+$(ECSS): $(SRC)/ecss.o $(LIB_NAME)
+	$(CC) -o $@ $< -lecss -Llib $(LIBS) -lboost_program_options
+
+$(TOKENIZE): $(SRC)/tokenize.o $(LIB_NAME)
+	$(CC) -o $@ $< -lecss -Llib $(LIBS)
+
+install: $(LIB_NAME)
+	mkdir -p $(PREFIX)/include/ecss
+	mkdir -p $(PREFIX)/bin
+	mkdir -p $(PREFIX)/lib
+	install $(SRC)/*.h $(PREFIX)/include/ecss
+	install $(ECSS) $(PREFIX)/bin
+	install $(LIB_NAME) $(PREFIX)/lib
+
+clean:
+	-rm -f $(LIB_OBJS) lib/libecss.a lib/libecss.so
+	-rm -f $(ECSS) $(SRC)/ecss.o $(TOKENIZE) $(SRC)/tokenize.o
+
+distclean: clean
+	-rm -f config.log config.status Makefile $(SRC)/config.h
+	-rm -rf autom4te.cache
+
+depend:
+	$(CC) $(CPPFLAGS) -MM `find $(SRC) -name \*.cpp`     | \
+		perl -ne 's{([^:]+[.]o:)}{$(SRC)/\1}; print' | \
+		cat - > build/deps_lib.mk
+
+include build/deps_lib.mk
+

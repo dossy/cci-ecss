@@ -1,0 +1,3 @@
+#foo { color: red; }
+@include "x/001.inc";
+#bar { color: blue; }

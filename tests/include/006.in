@@ -1,0 +1,3 @@
+@pragma set_include_path("tests/include/x:tests/include/x/y");
+@include "006-1.inc";
+@include "006-2.inc";

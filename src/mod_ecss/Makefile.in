@@ -1,0 +1,30 @@
+ECSS := @ecss@
+APACHE := @apache@
+APXS := @apxs@
+APR_CONFIG := @apr_config@
+
+CC := g++
+LEX := flex
+AR := ar
+CPPFLAGS := -Wall -g -O3 -fPIC -I$(ECSS)/include -I`$(APXS) -q INCLUDEDIR` `$(APXS) -q CFLAGS` `$(APR_CONFIG) --cppflags`
+LDFLAGS := -L$(ECSS)/lib `$(APXS) -q LDFLAGS_SHLIB`
+LIBS := -lecss
+
+LIB_OBJS := ecss.o
+
+.PHONY: all clean
+
+all: ecss.so
+
+install: all
+	$(APXS) -i -n 'ecss_module' ecss.so
+
+ecss.so: $(LIB_OBJS)
+	$(CC) $(LDFLAGS) -shared -o $@ $(LIB_OBJS) $(LIBS)
+
+clean:
+	-rm -f $(LIB_OBJS) ecss.so
+
+distclean: clean
+	-rm -f config.log config.status Makefile
+	-rm -rf autom4te.cache
