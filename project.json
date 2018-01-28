@@ -1,0 +1,19 @@
+{
+  "domain": "code.google.com",
+  "name": "ecss",
+  "summary": "Extended CSS",
+  "description": "**ecss** is a fully compatible CSS variant. **mod\\_ecss** (the ecss apache module) has been in production use since May 2007 serving millions of requests per day. Besides syntax-checking and compressing existing CSS, ecss provides the following extensions:\n  * [NestedRulesets](NestedRulesets.md)\n  * [Variables](Variables.md)\n  * [Themes](Themes.md)\n  * [IncludeFiles](IncludeFiles.md)\n  * [Evaluation](Evaluation.md)\n  * [UserAgentProperties](UserAgentProperties.md)\n\nHere's a brief example illustrating some of ecss's features:\n```\n@include \"other-stuff/ads.ecss\";\r\n$width: 800;\r\n$width_px: eval($width _ px);\r\n$horiz_padding: eval(floor($width * 0.018));\r\n$horiz_padding_px: eval($horiz_padding _ px);\r\n$vertical_padding: eval(floor($horiz_padding / 6));\r\n$vertical_padding_px: eval($vertical_padding _ px);\r\n#myproject {\r\n  #menu {\r\n    ul, ol {\r\n      list-style: none;\r\n      li {\r\n        height: eval($height _ em);\r\n        padding: 0;\r\n      }\r\n      a {\r\n        color: #aabbcc;\r\n        color(msie 7.0): #ddeeff;\r\n      }\r\n    }\r\n  }\r\n}\r\n```\n\nMore stuff to read:\n  * [InstallationGuide](InstallationGuide.md)\n  * [Gotchas](Gotchas.md)\n  * [History](History.md)",
+  "stars": 2,
+  "license": "gpl3",
+  "contentLicense": "",
+  "labels": [
+    "css"
+  ],
+  "creationTime": 0,
+  "repoType": "svn",
+  "subrepos": [],
+  "hasSource": true,
+  "ancestorRepo": "",
+  "logoName": "",
+  "movedTo": ""
+}

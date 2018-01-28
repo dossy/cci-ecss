@@ -1,0 +1,41 @@
+{
+  "id": 1,
+  "status": "Fixed",
+  "summary": "ecss doesn't like themes with immediate child declarations",
+  "labels": [
+    "Type-Defect",
+    "Priority-Medium"
+  ],
+  "stars": 1,
+  "commentCount": 4,
+  "comments": [
+    {
+      "id": 0,
+      "commenterId": -3742910286932309000,
+      "content": "Here's the test case:\r\n\r\n@define-theme immediate_child {\r\n    &gt; div.foo {\r\n        a:b;\r\n    }\r\n}\r\ndiv {\r\n    @theme foo;\r\n}\r\n\r\nHere's the result:\r\n\r\nEncountered the symbol &quot;&gt;&quot; when expecting one of the following: VARIABLE\r\nIDENT STAR CLASS HASH LBRACKET COLON\r\n",
+      "timestamp": 1269637383,
+      "attachments": []
+    },
+    {
+      "id": 1,
+      "commenterId": -3742910286932309000,
+      "content": "Corrected.",
+      "timestamp": 1269639504,
+      "attachments": []
+    },
+    {
+      "id": 2,
+      "commenterId": -3742910286932309000,
+      "content": "",
+      "timestamp": 1269639555,
+      "attachments": []
+    },
+    {
+      "id": 3,
+      "commenterId": 4658094113289014000,
+      "content": "I own this profile and do not understand issue",
+      "timestamp": 1315952379,
+      "attachments": []
+    }
+  ]
+}

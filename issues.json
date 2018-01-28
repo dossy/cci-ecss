@@ -1,0 +1,17 @@
+{
+  "pageNumber": 1,
+  "totalPages": 1,
+  "issues": [
+    {
+      "id": 1,
+      "status": "Fixed",
+      "summary": "ecss doesn't like themes with immediate child declarations",
+      "labels": [
+        "Type-Defect",
+        "Priority-Medium"
+      ],
+      "stars": 1,
+      "commentCount": 4
+    }
+  ]
+}
