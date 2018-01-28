@@ -8,6 +8,7 @@
 #include "ecss/file_util.h"
 #include "ecss/parser.h"
 #include "ecss/translator.h"
+#include "ecss/user_agent.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/program_options.hpp>
 #include <cstdio>
@@ -48,6 +49,23 @@ namespace
         if (g_vm.count("preserve-order")) {
             g_settings->set_preserve_order(true);
         }
+        if (g_vm.count("user-agent")) {
+            if (g_vm.count("user-agent-version")) {
+                g_settings->set_user_agent(
+                    User_agent(g_vm["user-agent"].as<string>(),
+                               g_vm["user-agent-version"].as<string>()));
+            }
+            else {
+                g_settings->set_user_agent(User_agent(g_vm["user-agent"].as<string>()));
+            }
+        }
+        else if (g_vm.count("user-agent-version")) {
+            cout << "missing user-agent option."
+                 << endl;
+            exit(2);
+        }
+
+
     }
 
     void read_input()
@@ -112,7 +130,9 @@ int main(int argc, char** argv)
         ("include-path,I", po::value<vector<string> >(), "set include path")
         ("input-file,i", po::value<string>(), "input file")
         ("output-file,o", po::value<string>(), "output file")
-        ("preserve-order,p", "preserve ruleset declaration order");
+        ("preserve-order,p", "preserve ruleset declaration order")
+        ("user-agent,u", po::value<string>(), "user agent")
+        ("user-agent-version,v", po::value<string>(), "user agent version ");
 
     po::store(po::parse_command_line(argc, argv, desc), g_vm);
     po::notify(g_vm);

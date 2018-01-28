@@ -10,16 +10,21 @@ using namespace ecss_core;
 
 namespace
 {
-    const char* selector_combinator_to_string(Selector::Combinator c)
+    char selector_combinator_to_string(Selector::Combinator c)
     {
         switch (c) {
-        case Selector::DESCENDANT:       return "";
-        case Selector::CHILD:            return "> ";
-        case Selector::ADJACENT_SIBLING: return "+ ";
-        case Selector::GENERAL_SIBLING:  return "~ ";
+        case Selector::DESCENDANT:       return ' ';
+        case Selector::CHILD:            return '>';
+        case Selector::ADJACENT_SIBLING: return '+';
+        case Selector::GENERAL_SIBLING:  return '~';
         }
         ECSS_PANIC(("Invalid selector combinator: %d", c));
         assert(0); // not reached
+    }
+
+    bool begins_with_selector_combinator(const std::string& s)
+    {
+        return s[0]==' ' || s[0]=='>' || s[0]=='+' || s[0]=='~';
     }
 
     const char* attr_selector_op_to_string(Attribute_selector::Operator op)
@@ -221,7 +226,6 @@ void AST_translator::visit(Selector* node)
     }
     node->lhs()->accept(*this);
     if (node->rhs()) {
-        emit(' ');
         emit(selector_combinator_to_string(node->binary_combinator()));
         // KLUDGE: Because selectors are defined recursively, our rhs will
         // push its own emit-target, which we need to pop and emit.
@@ -416,7 +420,10 @@ AST_translator::CSS_selector_array AST_translator::assemble_selectors()
         tmp.swap(answer);
         for (Iter j(i->begin()); j != i->end(); ++j) {
             for (Iter k(tmp.begin()); k != tmp.end(); ++k) {
-                answer.push_back(*k + ' ' + *j);
+                string s(*k);
+                if (!begins_with_selector_combinator(*j)) s += ' ';
+                s += *j;
+                answer.push_back(s);
             }
         }
     }

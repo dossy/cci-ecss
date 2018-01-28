@@ -113,8 +113,20 @@ $x: 12pt;
     }
   }
 }
+
+#test {
+  .a {
+    > .b {
+      + .c {
+        ~ .d {
+          fff:666
+        }
+      }
+    }
+  }
+}
 -o
-#test .a > .b + .c ~ .d{aaa:111;bbb:222;ccc:333;ddd:444;eee:555;}
+#test .a>.b+.c~.d{aaa:111;bbb:222;ccc:333;ddd:444;eee:555;fff:666;}
 -end
 
 -begin

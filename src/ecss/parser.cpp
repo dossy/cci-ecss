@@ -502,7 +502,9 @@ Flavor_declaration_ptr Parser::Impl::parse_flavor_declaration()
     const string name = match(TOKEN_IDENT);
     Ruleset_ptr ruleset;
     CREATE_AST_NODE(ruleset, Ruleset);
+    m_ruleset_depth++;
     parse_ruleset_block(ruleset);
+    m_ruleset_depth--;
     RETURN_AST_NODE(Flavor_declaration, name, ruleset);
 }
 

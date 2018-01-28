@@ -41,6 +41,7 @@ Compiler_settings::Compiler_settings()
     add_user_agent_regexp("^mozilla.*msie 5[.]5", User_agent("msie", "5.5"));
     add_user_agent_regexp("^mozilla.*msie 6[.]0", User_agent("msie", "6.0"));
     add_user_agent_regexp("^mozilla.*msie 7[.]0", User_agent("msie", "7.0"));
+    add_user_agent_regexp("^mozilla.*msie 8[.]0", User_agent("msie", "8.0"));
     add_user_agent_regexp("^mozilla.*msie", User_agent("msie"));
     add_user_agent_regexp("^mozilla.*gecko", User_agent("mozilla"));
     add_user_agent_regexp("^mozilla.*apple.*safari", User_agent("safari"));

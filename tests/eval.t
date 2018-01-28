@@ -82,3 +82,13 @@ div {
 -o
 ecss: <>:2:16: illegal function 'foo' in eval
 -end
+
+-begin
+-i
+$a: 12;
+$b: 760;
+$c: eval($b - (2 * $a));
+div { width: $c; }
+-o
+div{width:736;}
+-end

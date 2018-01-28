@@ -139,3 +139,18 @@ div {
 -o
 ecss: <>:2:4: Encountered the symbol "@define-theme" when expecting one of the following: VARIABLE IDENT STAR CLASS HASH LBRACKET COLON
 -end
+
+-begin
+-i
+@define-theme immediate_child {
+    > div.foo {
+        a:b;
+    }
+}
+div {
+    @theme immediate_child;
+}
+-o
+div>div.foo{a:b;}
+-end
+
